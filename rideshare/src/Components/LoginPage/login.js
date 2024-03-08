@@ -5,7 +5,7 @@ import { FaUser,FaLock } from "react-icons/fa";
 import { Link ,useNavigate} from "react-router-dom";
 
 const LoginForm = () =>{
-    const navigate=useNavigate();
+  const navigate=useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
