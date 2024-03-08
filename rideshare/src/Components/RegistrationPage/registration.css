@@ -1,0 +1,97 @@
+.register{
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background:url('../Images/pexels-craig-adderley-1546901.jpg')
+  no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.registerform{
+    width: 420px;
+    background: transparent;
+    border: 2px solid rgba(255,255,255, .2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0,0,0, .1);
+    color: #fff;
+    border-radius: 10px;
+    padding: 25px 30px;
+}
+.registerform h1{
+    font-size: 34px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+.registerform .radio-btn{
+    position: relative;
+    width: 75%;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px 0;
+}
+.registerform .input-box{
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 10px 0;
+}
+.registerform .input-box input{
+width: 100%;
+height: 100%;
+background:transparent;
+border: 2px solid rgba(255,255,255, .2);
+outline: none;
+border-radius: 10px;
+font-size: 16px;
+color: #fff;
+padding: 20px 45px 20px 20px;
+}
+
+.registerform .input-box input::placeholder{
+    color: #fff;
+}
+
+.registerform .input-box .icon{
+    position: absolute;
+    right: 20px;
+    top:50%;
+    font-size: 16px;
+    transform: translateY(-50%);
+}
+
+
+.registerform button{
+    width: 100%;
+    height: 45px;
+    background-color: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+}
+
+.registerform button:hover{
+    background-color: #edeaea;
+}
+
+.registerform .login-link{
+    font-size: 15px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-link p a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link p a:hover{
+    text-decoration: underline;
+}
+
