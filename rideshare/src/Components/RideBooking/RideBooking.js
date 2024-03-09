@@ -34,6 +34,16 @@ function RideBooking() {
     }
   };
 
+  const cancelRide = () => {
+    // This function would ideally interact with an API to book the ride
+      localStorage.setItem("ride",false)
+      localStorage.setItem("address",'')
+      localStorage.setItem("drop",'')
+      setBookingStatus(`Ride has been cancelled`);
+      setSelectedRide()
+    
+  };
+
   return (
     <div>
     <div className="navbar">
@@ -90,6 +100,7 @@ function RideBooking() {
       )}
 
       <button onClick={bookRide}>Book Ride</button>
+      {localStorage.getItem('ride')==='true' && <button onClick={bookRide}>Cancel Ride</button>}
 
       {bookingStatus && <p>{bookingStatus}</p>}
     </div>
