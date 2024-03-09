@@ -25,8 +25,7 @@ function Map({ onLocationSelect }) {
 
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyCyqT3WsVGDZKspRLXJ58hbXiWgM5vFOUU"
-    >
+      googleMapsApiKey="AIzaSyAnNTWnYY2U1uKL-JC-QS8Z_q1IW_ac9po">
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}

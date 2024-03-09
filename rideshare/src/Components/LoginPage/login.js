@@ -18,7 +18,14 @@ const LoginForm = () =>{
     console.log(userFound);
     if(userFound){
         alert('Login Successful');
-        navigate("/register");
+        if(role==="Passenger"){
+        localStorage.setItem("Name",email)
+        navigate("/booking");}
+        if(role==="Driver"){
+            localStorage.setItem("ride",false)
+            localStorage.setItem("dName",email)
+            navigate("/driver");
+        }
     }
     else{
         setError('Invalid username or password or role');

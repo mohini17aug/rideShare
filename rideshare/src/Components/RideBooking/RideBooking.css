@@ -1,50 +1,102 @@
-.ride-booking {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    gap: 10px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: auto;
+.ride{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-height: 100vh;
+  background:url('../Images/pexels-craig-adderley-1546901.jpg')
+  no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.ride .ride-booking{
+  width: 420px;
+  background: transparent;
+  border: 2px solid rgba(255,255,255, .2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 10px rgba(0,0,0, .1);
+  color: #fff;
+  border-radius: 10px;
+  padding: 25px 30px;
+}
+.ride-booking h1{
+  font-size: 34px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+.ride-booking .input-box{
+  position: relative;
+  width: 100%;
+  margin: 30px 0;
+  height: 50px;
+}
+.input-box select{
+  width: 100%;
+  height: 60px;
+  background: transparent;
+  border: 2px solid rgba(255,255,255, .2);
+  outline: none;
+  border-radius: 40px;
+  font-size: 16px;
+  color: black;
+  padding: 20px 45px 20px 20px;
   }
   
-  .ride-booking input[type="text"],
-  .ride-booking button {
+.input-box .material-icons{
+  position: absolute;
+  right: 20px;
+  top:50%;
+  font-size: 16px;
+  transform: translateY(-50%);
+}
+.ride-booking button{
     width: 90%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin: 5px 0;
-  }
-  
-  .ride-booking button {
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
+    height: 45px;
+    background-color: #fff;
     border: none;
-  }
-  
-  .ride-booking button:hover {
-    background-color: #0056b3;
-  }
-  
-  .ride-options {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 5px;
-    width: 90%;
-  }
-  
-  .ride-option {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .ride-booking p {
-    color: #28a745;
-  }
+    outline: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 10px;
+    margin: 5px 0;
+}
+.ride-booking button:hover{
+  background-color: #edeaea;
+}
+.ride-options {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 5px;
+  width: 90%;
+}
+.ride-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ride-booking p {
+  color: #edeaea;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+}
+
+.navbar-left {
+  font-size: 32px;
+}
+.navbar-right p{
+  display: inline-block;
+}
+.navbar-right .material-icons {
+  display: inline-block;
+  vertical-align: middle;
+
+}

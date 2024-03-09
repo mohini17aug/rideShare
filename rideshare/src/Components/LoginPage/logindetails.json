@@ -1,5 +1,5 @@
 [
-    { "email": "user1@gmail.com", "password": "password1","role":"Driver" },
-    { "email": "user2@gmail.com", "password": "password2" ,"role":"Passenger"}
+    { "email": "shiva@gmail.com", "password": "password1","role":"Driver" },
+    { "email": "shivani@gmail.com", "password": "password2" ,"role":"Passenger"}
 ]
   

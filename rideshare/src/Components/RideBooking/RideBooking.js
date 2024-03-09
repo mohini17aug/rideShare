@@ -3,16 +3,16 @@ import './RideBooking.css';
 import Map from '../Map/Map';
 
 function RideBooking() {
-  const [pickupLocation, setPickupLocation] = useState('');
+  const [pickupLocation, setPickupLocation] = useState();
   const [destination, setDestination] = useState('');
   const [rideOptions, setRideOptions] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
   const [bookingStatus, setBookingStatus] = useState('');
-
+  
   const pickupLocations = ['Location A', 'Location B', 'Location C'];
   const destinationLocations = ['Destination 1', 'Destination 2', 'Destination 3'];
-
-  // Mock function to simulate fetching ride options based on pickup and destination
+  
+    // Mock function to simulate fetching ride options based on pickup and destination
   const fetchRideOptions = () => {
     // This should ideally fetch from an API
     setRideOptions([
@@ -25,6 +25,9 @@ function RideBooking() {
   const bookRide = () => {
     // This function would ideally interact with an API to book the ride
     if (selectedRide) {
+      localStorage.setItem("ride",true)
+      localStorage.setItem("address",pickupLocation)
+      localStorage.setItem("drop",destination)
       setBookingStatus(`Ride booked with ${selectedRide.name}. A driver will be there in ${selectedRide.eta}.`);
     } else {
       setBookingStatus('No ride option selected.');
@@ -32,24 +35,41 @@ function RideBooking() {
   };
 
   return (
+    <div>
+    <div className="navbar">
+        <div className="navbar-left">
+          <span>Rideshare</span>
+        </div>
+        <div className="navbar-right">
+          <p>Hello {localStorage.getItem("Name").split('@')[0]}!!</p>
+          &nbsp;&nbsp;<i className="material-icons">account_circle</i>
+        </div>
+    </div>
+    <div className="ride">
+      <div className='Map'> <Map /></div>
     <div className="ride-booking">
       <h1>
         Book a ride now
       </h1>
-      <Map/>
-      <select value={''} onChange={(e) => setPickupLocation(e.target.value)}>
-        <option value="">Select Pickup Location</option>
+      <div className='input-box'>
+      <select value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)}>
+        <option value="" className='m'>Select Pickup Location</option>
         {pickupLocations.map((location, index) => (
           <option key={index} value={location}>{location}</option>
         ))}
       </select>
-
-      <select value={''} onChange={(e) => setDestination(e.target.value)}>
+      <i className='material-icons'>my_location</i>
+      </div>
+      <div className='input-box'>
+      <select value={destination} onChange={(e) => setDestination(e.target.value)}>
         <option value="">Select Destination</option>
         {destinationLocations.map((destination, index) => (
           <option key={index} value={destination}>{destination}</option>
         ))}
       </select>
+      <i className='material-icons'>location_on</i>
+      </div>
+
       <button onClick={fetchRideOptions}>Find Rides</button>
 
       {rideOptions.length > 0 && (
@@ -72,6 +92,8 @@ function RideBooking() {
       <button onClick={bookRide}>Book Ride</button>
 
       {bookingStatus && <p>{bookingStatus}</p>}
+    </div>
+    </div>
     </div>
   );
 }
