@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './RideBooking.css';
+import Map from '../Map/Map';
 
 function RideBooking() {
   const [pickupLocation, setPickupLocation] = useState('');
@@ -32,6 +33,10 @@ function RideBooking() {
 
   return (
     <div className="ride-booking">
+      <h1>
+        Book a ride now
+      </h1>
+      <Map/>
       <select value={''} onChange={(e) => setPickupLocation(e.target.value)}>
         <option value="">Select Pickup Location</option>
         {pickupLocations.map((location, index) => (
