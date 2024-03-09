@@ -31,14 +31,14 @@
 }
 .input-box select{
   width: 100%;
-  height: 60px;
+  height: 55px;
   background: transparent;
   border: 2px solid rgba(255,255,255, .2);
   outline: none;
   border-radius: 40px;
   font-size: 16px;
   color: black;
-  padding: 20px 45px 20px 20px;
+  padding: 10px 45px 10px 20px;
   }
   
 .input-box .material-icons{
@@ -50,7 +50,7 @@
 }
 .ride-booking button{
     width: 90%;
-    height: 45px;
+    height: 40px;
     background-color: #fff;
     border: none;
     outline: none;
