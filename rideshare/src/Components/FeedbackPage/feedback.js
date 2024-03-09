@@ -16,7 +16,8 @@ const FeedbackPage = () => {
         e.preventDefault();
         console.log("Feedback:", feedback);
         console.log("Rating:", rating);
-        navigate("/");
+        localStorage.setItem("feedback",false)
+        navigate("/booking");
     };
 
     return (

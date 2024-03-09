@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './RideBooking.css';
 import Map from '../Map/Map';
+import FeedbackPage from '../FeedbackPage/feedback';
 
 function RideBooking() {
   const [pickupLocation, setPickupLocation] = useState();
@@ -8,6 +9,7 @@ function RideBooking() {
   const [rideOptions, setRideOptions] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
   const [bookingStatus, setBookingStatus] = useState('');
+  const feedback=localStorage.getItem("feedback");
   
   const pickupLocations = ['Location A', 'Location B', 'Location C'];
   const destinationLocations = ['Destination 1', 'Destination 2', 'Destination 3'];
@@ -28,6 +30,7 @@ function RideBooking() {
       localStorage.setItem("ride",true)
       localStorage.setItem("address",pickupLocation)
       localStorage.setItem("drop",destination)
+      localStorage.setItem("feedback",false)
       setBookingStatus(`Ride booked with ${selectedRide.name}. A driver will be there in ${selectedRide.eta}.`);
     } else {
       setBookingStatus('No ride option selected.');
@@ -56,7 +59,7 @@ function RideBooking() {
         </div>
     </div>
     <div className="ride">
-      <div className='Map'> <Map /></div>
+      <div className='Map'> { feedback==="true"?<FeedbackPage/>:<Map />}</div>
     <div className="ride-booking">
       <h1>
         Book a ride now
@@ -104,6 +107,9 @@ function RideBooking() {
 
       {bookingStatus && <p>{bookingStatus}</p>}
     </div>
+    {/* <div>
+     { feedback==="true"?<FeedbackPage/>:<p></p>}
+     </div> */}
     </div>
     </div>
   );
