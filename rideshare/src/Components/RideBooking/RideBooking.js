@@ -103,7 +103,7 @@ function RideBooking() {
       )}
 
       <button onClick={bookRide}>Book Ride</button>
-      {localStorage.getItem('ride')==='true' && <button onClick={bookRide}>Cancel Ride</button>}
+      {localStorage.getItem('ride') ==='true' && <button onClick={cancelRide}>Cancel Ride</button>}
 
       {bookingStatus && <p>{bookingStatus}</p>}
     </div>
