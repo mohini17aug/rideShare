@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-k+h4n1ao!h114n+q&v67qky#)vwu0vyx_+h7kt&8n-zt7izt#u'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 AUTH_USER_MODEL = 'rideshare_app.User'
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost','17.0.0.1']
 
 
 # Application definition
@@ -104,7 +104,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        #'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ],
 }
 

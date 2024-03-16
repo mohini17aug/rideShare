@@ -6,6 +6,8 @@ from rideshare_app.serializers import UserRegistrationSerializer,UserLoginSerial
 from rest_framework.authtoken.models import Token
 from rideshare_app.models import Ride
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import ValidationError
+
 
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserRegistrationSerializer
@@ -15,7 +17,8 @@ class UserRegistrationView(generics.CreateAPIView):
         if serializer.is_valid():
             user = serializer.save()
             uid=user.id
-            return Response(uid, status=status.HTTP_201_CREATED)
+          #  return Response(uid, status=status.HTTP_201_CREATED)
+            return Response("User created successfully", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserLoginView(generics.GenericAPIView):
@@ -41,9 +44,9 @@ class RideListView(generics.ListCreateAPIView):
 class RideDetailView(generics.RetrieveUpdateAPIView):
     queryset = Ride.objects.all()
     serializer_class = RideSerializer
-    
-    def perform_update(self, serializer):
-        ride = self.get_object()
-        if ride.status != 'completed':
-            raise serializers.ValidationError("Can only rate completed rides.")
-        serializer.save()
+    permission_classes = [IsAuthenticated]
+  #  def perform_update(self, serializer):
+   #     ride = self.get_object()
+    #    if ride.status != 'completed':
+     #       raise serializer.ValidationError("Can only rate completed rides.")
+      #  serializer.save()

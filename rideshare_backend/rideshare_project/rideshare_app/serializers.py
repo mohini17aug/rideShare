@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rideshare_app.models import User, Ride
+from rest_framework.exceptions import ValidationError
 
 
 class UserLoginSerializer(serializers.Serializer):
@@ -30,6 +31,11 @@ class RideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ride
         fields = ['id', 'passenger', 'driver', 'pickup_location', 'destination', 'status', 'created_at', 'rating', 'feedback']
-        read_only_fields = ['id', 'status', 'driver', 'created_at']
+        read_only_fields = ['id', 'driver', 'created_at']
+
+        def perform_update(self, serializer):
+            if Ride.status != 'completed':
+                raise ValidationError("Can only rate completed rides.")
+            serializer.save()
 
 
