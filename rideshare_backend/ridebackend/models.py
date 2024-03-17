@@ -15,7 +15,7 @@ class User(AbstractUser):
     is_driver = models.BooleanField(default=False)
     username = models.CharField(max_length=200, unique=True)
     password = models.CharField(max_length=200, default="Password1")
-    email= models.CharField(max_length=200, default="Null")
+    #email= models.CharField(max_length=200, default="Null")
     availibility = models.CharField(max_length=20, choices=AvailibilityChoices, default='available')
 
 class Ride(models.Model):
