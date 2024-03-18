@@ -7,7 +7,7 @@ class User(AbstractUser):
     AvailibilityChoices = (
         ('available', 'Available'),
         ('assigned', 'Assigned'),
-        ('buys', 'Busy'),
+        ('busy', 'Busy'),
         ('not_available', 'Not Available'),
         ('not_active', 'Not Active'),
     )

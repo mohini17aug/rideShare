@@ -31,7 +31,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class RideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ride
-        fields = ['id', 'passenger', 'driver', 'pickup_location', 'destination']
+        fields = ['id', 'passenger', 'driver', 'pickup_location', 'destination', 'status', 'created_at']
         #fields = ['id', 'passenger', 'driver', 'pickup_location', 'destination', 'status', 'created_at', 'rating', 'feedback']
         read_only_fields = ['id', 'driver', 'created_at']
 
@@ -41,3 +41,14 @@ class RideSerializer(serializers.ModelSerializer):
             serializer.save()
 
 
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ride
+        fields = ['id', 'passenger', 'driver', 'pickup_location', 'destination', 'status', 'created_at', 'rating', 'feedback']
+        read_only_fields = ['id', 'driver', 'created_at']
+
+        def perform_update(self, serializer):
+            if Ride.status != 'completed':
+                raise ValidationError("Can only rate completed rides.")
+            serializer.save()

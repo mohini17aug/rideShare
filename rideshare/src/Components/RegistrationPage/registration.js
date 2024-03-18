@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useState }  from "react";
 import './registration.css'
+import axios from 'axios'
+import { useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
     const [role, setRole] = useState('');
     const [user, setUser] = useState({
-        username: "",
         email: "",
         password: "",
         reEnterPassword: ""
     });
     const [error, setError] = useState('');
+    const [isDriver, setIsDriver] = useState(false); 
+    const [isPassenger, setIsPassenger] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,10 +24,20 @@ const RegistrationForm = () => {
         });
     };
 
+    useEffect(() => {
+        if (role === "Driver") {
+            setIsDriver(true);
+            setIsPassenger(false);
+        } else if (role === "Passenger") {
+            setIsDriver(false);
+            setIsPassenger(true);
+        }
+    }, [role]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!user.username || !user.email || !user.password || !user.reEnterPassword || !role) {
+        if (!user.email || !user.password || !user.reEnterPassword || !role) {
             setError('Please fill in all fields');
             return;
         }
@@ -37,8 +50,23 @@ const RegistrationForm = () => {
             return;
         }
         console.log(user);
-        alert("Registration Successfull !!");
-        navigate("/");
+        console.log(isDriver)
+        console.log(user.email+" "+user.password+" "+isDriver+" "+isPassenger)
+        axios.post('http://127.0.0.1:8000/register/', {
+            username: user.email,
+            password: user.password,
+            is_driver: isDriver,
+            is_passenger: isPassenger
+        })
+        .then(response => {
+            console.log(response.data);
+            alert("Registration Successfull !!");
+            navigate("/");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors here
+        });
     };
 
     return (
@@ -52,10 +80,7 @@ const RegistrationForm = () => {
                         <input type="radio" id="passenger" name="role" value="Passenger" checked={role === "Passenger"} onChange={(e) => setRole(e.target.value)} />Passenger
                     </div>
                     <div className="input-box">
-                        <input type="text" name="username" value={user.username} placeholder="Username" onChange={handleChange} required />
-                    </div>
-                    <div className="input-box">
-                        <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
+                        <input type="email" name="email" placeholder="Username" onChange={handleChange} required />
                     </div>
                     <div className="input-box">
                         <input type="password" name="password" placeholder="Password" onChange={handleChange} required />

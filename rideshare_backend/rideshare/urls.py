@@ -17,17 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from ridebackend.views import UserRegistrationView, UserLoginView, RideListView, RideDetailView, get_drivers, ride_post_view, ride_complete_view, feedback
+from ridebackend.views import UserRegistrationView, UserLoginView, RideListView, RideDetailView, get_drivers, ride_post_view, ride_complete_view, feedback,cancleRide
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('register/', UserRegistrationView.as_view(), name='register'),
     path('login/', UserLoginView.as_view(), name='login'),
-    path('rides1/', RideListView.as_view(), name='ride-list1'),
-    path('rides/<int:pk>/', RideDetailView.as_view(), name='ride-detail'),
     path('drivers/', get_drivers, name='get-drivers'),
     path('rides/', ride_post_view, name='ride-list'),
-    path('rideComplete/', ride_complete_view, name='ride_complete_view'),
+    path('rides/complete/', ride_complete_view, name='ride_complete_view'),
     path('feedback/', feedback, name='ride_feedback'),
-    
+    path('ridesdetails/', RideDetailView, name='ride-details'),
+    path('cancleRide/', cancleRide, name='cancle_Ride')
 ]

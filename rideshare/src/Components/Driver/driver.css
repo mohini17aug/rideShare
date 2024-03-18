@@ -2,6 +2,23 @@
     text-align: center;
     margin: 20px;
 }
+.vehicle-form,.vehicle-details{
+padding: 10px;
+border: 5px solid rgba(15, 14, 14, 0.2);
+box-shadow: 0 0 10px rgba(0,0,0, .1);
+}
+.vehicle-form .sbtn,.vehicle-details .edbtn {
+    margin: 5px;
+    padding: 3px 5px;
+}
+.get,.add{
+    margin: 5px;
+    padding: 3px 5px;
+}
+.sbtn:hover{
+    cursor: pointer;
+}
+
 .submit-btn{
     display: block;
     width: 50%;

@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from django.views.decorators.http import require_POST
 from rest_framework import status, generics
 from rest_framework.response import Response
-from ridebackend.serializers import UserRegistrationSerializer,UserLoginSerializer, RideSerializer
+from ridebackend.serializers import UserRegistrationSerializer,UserLoginSerializer, RideSerializer,FeedbackSerializer
 from rest_framework.authtoken.models import Token
 from ridebackend.models import Ride,User
 from rest_framework.permissions import IsAuthenticated
@@ -76,36 +77,47 @@ class RideListView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
        # Assign the passenger as the request user
         try:
-            driver = User.objects.filter(is_driver=True).filter(availibility='available').first()
+            driver = User.objects.filter(is_driver=True).filter(availibility='Available').last()
             driver_json = serializers.serialize('json', [driver])
             driver_data = json.loads(driver_json)
             user_fields = driver_data[0]['fields']
             drivername = user_fields.get('username', 'Not available')
         except Exception as e:
         # Handle other exceptions
-            return JsonResponse({'status': 'failed', 'error': "Driver not available."}, status=500)
+            return JsonResponse({'status': 'failed', 'error': "Driver not available."}, status=400)
        
             serializer.save(passenger=self.request.user)
 
-class RideDetailView(generics.RetrieveUpdateAPIView):
-    queryset = Ride.objects.all()
-    serializer_class = RideSerializer
-    permission_classes = [IsAuthenticated]
-  #  def perform_update(self, serializer):
-   #     ride = self.get_object()
-    #    if ride.status != 'completed':
-     #       raise serializer.ValidationError("Can only rate completed rides.")
-      #  serializer.save()
+
 
 @api_view(['GET'])
 def get_drivers(request):
-    # Query for users where is_driver is True
     users = User.objects.filter(is_driver=True)
     serializer = UserRegistrationSerializer(users, many=True)
     # Serialize the data
     #data = list(users.values('username', 'email', 'is_driver', 'is_passenger'))  # Adjust the fields as needed
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+def RideDetailView(request):
+    username = request.query_params.get('username', None)
+    statusQuery = request.query_params.get('status', None)
+    if statusQuery == "completed":
+        user_profile = Ride.objects.filter(driver=username).filter(status='completed')
+        if user_profile:
+            serializer = FeedbackSerializer(user_profile, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+    if username is not None:
+        user_profile = Ride.objects.filter(driver=username).filter(status='assigned')
+        if user_profile:
+            serializer = RideSerializer(user_profile, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Username not provided"}, status=status.HTTP_400_BAD_REQUEST)
+    
 
 @require_POST
 @api_view(['POST'])
@@ -120,7 +132,7 @@ def ride_post_view(request):
             return HttpResponseBadRequest("passenger is required.")
 
         try:
-            driver = User.objects.filter(is_driver=True).filter(availibility='available').first()
+            driver = User.objects.filter(is_driver=True).filter(availibility='available').last()
             driver_json = serializers.serialize('json', [driver])
 
             driver_data = json.loads(driver_json)
@@ -174,17 +186,21 @@ def ride_complete_view(request):
         
         #update user model for driver
         #driver_instance = Ride.objects.get(passenger=passenger)
-        driver_instance = Ride.objects.filter(passenger=passenger).filter(driver=drivername).first()
+        driver_instance = Ride.objects.filter(passenger=passenger).filter(driver=drivername).last()
         
         # Update the field
         driver_instance.status='completed'
         # Save the changes
         driver_instance.save()
 
+        user_model = User.objects.filter(username=drivername).last()
+        user_model.availibility="available"
+        user_model.save()
+
         # Return the response data as JSON
         ride_data={
             'passenger':passenger,
-            'driver':drivername,
+            'driver': drivername,
             'status' : 'completed',
         }
         return JsonResponse(ride_data, safe=False)
@@ -192,6 +208,34 @@ def ride_complete_view(request):
     except json.JSONDecodeError:
         return HttpResponseBadRequest("Invalid JSON.")
 
+@require_POST
+@api_view(['POST'])
+@csrf_exempt
+def cancleRide(request):
+    try:
+        data = json.loads(request.body)
+        permission_classes = [IsAuthenticated]
+
+        driverName = data.get('driver')
+        
+        try:
+            user_model = User.objects.filter(username=driverName).last()
+            user_model.availibility="available"
+            user_model.save() 
+        except Exception as e:
+            return JsonResponse({'status': 'failed', 'error': "Ride couldn't be cancled."}, status=400)
+            
+        ride_Model=Ride.objects.filter(driver=driverName).filter(status = 'assigned').last()
+        ride_Model.status="cancelled"
+        ride_Model.full_clean()
+        ride_Model.save()
+        # Return the response data as JSONride_complete_view
+        ride_data={
+            'message':"Ride has been cancelled"
+        }
+        return JsonResponse(ride_data, safe=False, status=200)
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest("Invalid JSON.")
 
 @require_POST
 @csrf_exempt
@@ -205,7 +249,7 @@ def feedback(request):
         feedbackFromUser= data.get('feedback')
         
         #update user model for driver
-        driver_instance = Ride.objects.filter(passenger=passenger).filter(status='completed').first()
+        driver_instance = Ride.objects.filter(passenger=passenger).filter(status='completed').last()
       # Update the field
         driver_instance.rating = ratingFromUser
         driver_instance.feedback =feedbackFromUser
@@ -222,4 +266,3 @@ def feedback(request):
         return JsonResponse(feedbackData, safe=False)
     except json.JSONDecodeError:
         return HttpResponseBadRequest("User can only rate their completed rides.")
-

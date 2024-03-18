@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import './feedback.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link} from "react-router-dom";
 import { FaStar } from 'react-icons/fa';
+import axios from "axios";
 
 const FeedbackPage = () => {
     const navigate=useNavigate();
     const [feedback, setFeedback] = useState('');
     const [rating, setRating] = useState(0);
+    const [ratingError, setRatingError] = useState('');
 
     const handleRatingChange = (ratingValue) => {
         setRating(ratingValue);
@@ -14,10 +16,27 @@ const FeedbackPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (rating === 0) {
+            setRatingError('Please provide a rating');
+            return;
+        } else {
+            setRatingError('');
+        }
+        axios.post('http://127.0.0.1:8000/feedback/', {
+            "passenger": localStorage.getItem("Name"),
+            "rating":rating,
+            "feedback":feedback
+        }).then(response=>{
+          console.log(response.data)
+          localStorage.setItem("feedback",false)
+          navigate("/booking");
+          window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        })
         console.log("Feedback:", feedback);
         console.log("Rating:", rating);
-        localStorage.setItem("feedback",false)
-        navigate("/booking");
     };
 
     return (
@@ -44,6 +63,7 @@ const FeedbackPage = () => {
                         })}
                     </div>
                 </div>
+                {ratingError && <div className="error-message">{ratingError}</div>}
                 <button type="submit" className="submit-btn">Submit</button>
             </form>
         </div>
